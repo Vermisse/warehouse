@@ -2,6 +2,7 @@ package org.warehouse.web.controller;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
+import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.warehouse.web.dao.*;
 
@@ -23,8 +24,16 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "add", method = RequestMethod.POST)
-	String add(String name, String password) {
+	String add(String name, String password, Model model) {
+		if(mapper.queryUser(name, null) != null) {
+			model.addAttribute("msg", "帐号已存在！");
+			return "/user/add";
+		}
 		int result = mapper.addUser(name, password);
-		return result == 0 ? "redirect:/user/add.html" : "redirect:/user/list.html";
+		if(result == 0) {
+			model.addAttribute("msg", "保存失败！");
+			return "/user/add";
+		}
+		return "redirect:/user/list.html";
 	}
 }

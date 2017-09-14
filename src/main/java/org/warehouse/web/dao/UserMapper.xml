@@ -9,16 +9,18 @@
 			t.id,
 			t.name,
 			t.password,
-			t.state
+			t.type,
+			t.status
 		from
 			sys_user t
 		where
 			t.name = #{name}
-		and
-			t.password = #{password}
+		<if test="password != null and password != ''">
+			and t.password = #{password}
+		</if>
 	</select>
 	<insert id="addUser">
-		insert into sys_user(name, password, state)
-		values(#{name}, #{password}, 0)
+		insert into sys_user(name, password, type, status)
+		values(#{name}, #{password}, 1, 0)
 	</insert>
 </mapper>
