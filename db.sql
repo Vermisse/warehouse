@@ -13,7 +13,6 @@
 
 
 -- 导出 warehouse 的数据库结构
-DROP DATABASE IF EXISTS `warehouse`;
 CREATE DATABASE IF NOT EXISTS `warehouse` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `warehouse`;
 
@@ -24,10 +23,12 @@ CREATE TABLE IF NOT EXISTS `sys_user` (
   `password` varchar(50) NOT NULL,
   `state` varchar(50) NOT NULL COMMENT '1:管理员/0:普通用户',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- 正在导出表  warehouse.sys_user 的数据：~0 rows (大约)
 /*!40000 ALTER TABLE `sys_user` DISABLE KEYS */;
+INSERT INTO `sys_user` (`id`, `name`, `password`, `state`) VALUES
+	(1, 'admin', 'admin', '1');
 /*!40000 ALTER TABLE `sys_user` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

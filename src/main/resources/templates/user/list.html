@@ -1,0 +1,84 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:substituteby='template :: head'></head>
+<body>
+	<div class="wrapper">
+		<div class="sidebar" data-color="purple" data-image="/img/sidebar-5.jpg">
+			<div th:substituteby='template :: menu (${"用户管理"})'></div>
+		</div>
+		<div class="main-panel">
+			<nav th:substituteby='template :: nav (${"用户管理"})'></nav>
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="content">
+									<form action="" method="post">
+										<div class="row">
+											<div class="col-md-3">
+												<div class="form-group">
+													<input type="text" class="form-control" placeholder="用户名" />
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<button type="submit" class="btn btn-info btn-fill">查询</button>
+													<button type="button" class="btn btn-success btn-fill" onclick="window.location.href='add.html'">新增</button>
+												</div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="content table-responsive table-full-width">
+									<table class="table table-hover table-striped">
+										<thead>
+											<th>ID</th>
+											<th>账号</th>
+											<th>操作</th>
+										</thead>
+										<tbody>
+											<tr>
+												<td>1</td>
+												<td>Dakota Rice</td>
+												<td><a href="#">修改密码</a></td>
+											</tr>
+											<tr>
+												<td>2</td>
+												<td>Dakota Rice</td>
+												<td><a href="#">修改密码</a></td>
+											</tr>
+											<tr>
+												<td>3</td>
+												<td>Dakota Rice</td>
+												<td><a href="#">修改密码</a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="content table-responsive table-full-width" style="text-align:center;">
+									<button type="button" class="btn">上一页</button>
+									<button type="button" class="btn">下一页</button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
