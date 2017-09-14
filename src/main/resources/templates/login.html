@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8" />
+	<title>仓库管理系统</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!-- CSS -->
+	<link rel="stylesheet" href="/css/reset.css" />
+	<link rel="stylesheet" href="/css/supersized.css" />
+	<link rel="stylesheet" href="/css/index.css" />
+	<!-- Javascript -->
+	<script src="/js/jquery-1.8.2.min.js"></script>
+	<script src="/js/supersized.3.2.7.min.js"></script>
+	<script src="/js/supersized-init.js"></script>
+	<script src="/js/scripts.js"></script>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+</head>
+<body>
+	<div class="page-container">
+		<h1>安全登录</h1>
+		<form action="/login.html" method="post">
+			<input type="text" name="user" class="username" placeholder="账号" th:value="${user_name}" />
+			<input type="password" name="password" class="password" placeholder="密码" />
+			<button type="submit">登录</button>
+			<div class="error">
+				<span>+</span>
+			</div>
+			<p th:if="${msg != null}" th:text="${msg}">错误提示</p>
+		</form>
+	</div>
+</body>
+</html>
