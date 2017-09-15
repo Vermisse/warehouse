@@ -2,6 +2,8 @@ package org.warehouse.web.controller;
 
 import java.util.*;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
@@ -53,7 +55,13 @@ public class UserController {
 	 * @return
 	 */
 	@RequestMapping(value = "edit", method = RequestMethod.GET)
-	String editPassword(String id, Model model) {
+	String editPassword(String id, Model model, HttpSession session) {
+		
+		if("0".equals(id)) {
+			Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+			id = String.valueOf(user.get("id"));
+		}
+		
 		Map map = mapper.queryUserById(id);
 		if(map != null) {
 			model.addAttribute("map", map);
