@@ -31,6 +31,11 @@
 	   	$(document).ready(function(){
 	       	demo.initChartist();
 	   	});
+	   	
+		var page = function(cur) {
+			if(cur) $("input[name='cur']").val(cur);
+			$("button[type='submit']").click();
+		}
 	</script>
 </head>
 <div class="sidebar-wrapper" th:fragment="menu (title)">
@@ -50,8 +55,8 @@
 				<p>用户管理</p>
 			</a>
 		</li>
-		<li>
-			<a href="table.html">
+		<li th:classappend="${title == '订单管理'}? 'active'">
+			<a href="/order/list.html">
 				<i class="pe-7s-note2"></i>
 				<p>订单管理</p>
 			</a>
@@ -62,13 +67,13 @@
 				<p>库存管理</p>
 			</a>
 		</li>
-		<!-- 
 		<li>
 			<a href="icons.html">
 				<i class="pe-7s-science"></i>
-				<p>Icons</p>
+				<p>订单校验</p>
 			</a>
 		</li>
+		<!-- 
 		<li>
 			<a href="maps.html">
 				<i class="pe-7s-map-marker"></i>
@@ -103,3 +108,18 @@
 		</div>
 	</div>
 </nav>
+<div class="row" th:fragment="page" th:if="${page != null}">
+	<input type="hidden" name="cur" pattern="^[0-9]+$" th:value="${page.cur}" />
+	<div class="col-md-12">
+		<div class="card">
+			<div class="content table-responsive table-full-width" style="text-align:center;">
+				<button type="button" class="btn"
+					th:disabled="${page.cur le page.prev}"
+					th:onclick="'page(' + ${page.prev} + ')'">上一页</button>
+				<button type="button" class="btn"
+					th:disabled="${page.cur ge page.next}"
+					th:onclick="'page(' + ${page.next} + ')'">下一页</button>
+			</div>
+		</div>
+	</div>
+</div>

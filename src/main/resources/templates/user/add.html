@@ -34,6 +34,13 @@
 											</div>
 										</div>
 										<div class="clearfix"></div>
+										<div class="row" th:if="${msg != null}">
+											<div class="col-md-8">
+												<div class="alert alert-danger">
+													<span th:text="${msg}">错误提示</span>
+												</div>
+											</div>
+										</div>
 									</form>
 								</div>
 							</div>

@@ -24,7 +24,7 @@ import org.warehouse.filter.*;
 @EnableAutoConfiguration
 @EnableScheduling
 @Configuration
-@MapperScan("org.warehouse.web.dao")
+@MapperScan("org.warehouse.web.dao.*")
 public class App extends WebMvcConfigurerAdapter implements EmbeddedServletContainerCustomizer {
 
 	@Autowired
@@ -74,7 +74,7 @@ public class App extends WebMvcConfigurerAdapter implements EmbeddedServletConta
 
 		PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
-		sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:org/warehouse/web/dao/*.xml"));
+		sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:org/warehouse/web/dao/**/*.xml"));
 		return sqlSessionFactoryBean.getObject();
 	}
 	

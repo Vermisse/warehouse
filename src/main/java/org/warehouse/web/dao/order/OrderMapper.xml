@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN"   
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.warehouse.web.dao.order.OrderMapper">
+
+	<insert id="addOrder">
+		insert into `order`(id, delivery, status, create_date)
+		values(#{id}, #{delivery}, 1, #{create_date, jdbcType=DATE})
+	</insert>
+	<insert id="addProduct">
+		insert into order_product(order_id, product_id, product_name)
+		values(#{order_id}, #{product_id}, #{product_name})
+	</insert>
+	<select id="checkOrder" resultType="Map">
+		select id from `order` t where t.id = #{id}
+	</select>
+	<select id="queryList" resultType="Map">
+		select t.id,t.delivery,t.status,t.create_date
+		from `order` t
+		where 1=1
+		<if test="id != null and id != ''">
+			and t.id like concat('%', #{id}, '%')
+		</if>
+		<if test="status != null and status != '-1'">
+			and t.status = #{status}
+		</if>
+		order by t.create_date desc, t.id
+		limit ${page.num},${page.size}
+	</select>
+	<select id="queryCount" resultType="Integer">
+		select count(*) from `order` t
+		where 1=1
+		<if test="id != null and id != ''">
+			and t.id like concat('%', #{id}, '%')
+		</if>
+		<if test="status != null and status != '-1'">
+			and t.status = #{status}
+		</if>
+	</select>
+</mapper>
