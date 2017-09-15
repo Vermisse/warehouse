@@ -47,7 +47,7 @@
 												<tr th:each="item : ${list}">
 													<td th:text="${item.id}">1</td>
 													<td th:text="${item.name}">Dakota Rice</td>
-													<td><a href="#">修改密码</a></td>
+													<td><a href="edit.html" th:href="'edit.html?id=' + ${item.id}">修改密码</a></td>
 												</tr>
 											</tbody>
 										</table>

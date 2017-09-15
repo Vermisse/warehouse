@@ -46,4 +46,35 @@ public class UserController {
 		}
 		return "redirect:/user/list.html";
 	}
+	
+	/**
+	 * 修改密码
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "edit", method = RequestMethod.GET)
+	String editPassword(String id, Model model) {
+		Map map = mapper.queryUserById(id);
+		if(map != null) {
+			model.addAttribute("map", map);
+			return "/user/edit";
+		}
+		return "redirect:/user/list.html";
+	}
+	
+	/**
+	 * 修改密码
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping(value = "edit", method = RequestMethod.POST)
+	String editPasswordById(String userId, String password, Model model) {
+		int result = mapper.editPasswordById(userId, password);
+		if(result == 0) {
+			model.addAttribute("msg", "保存失败！");
+			model.addAttribute("id", userId);
+			return "/user/edit";
+		}
+		return "redirect:/user/list.html";
+	}
 }

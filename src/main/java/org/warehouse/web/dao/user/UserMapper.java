@@ -15,4 +15,8 @@ public interface UserMapper {
 	int queryCount(@Param("name") String name, @Param("type") Integer type);
 
 	int addUser(@Param("name") String name, @Param("password") String password);
+	
+	Map<String, Object> queryUserById(@Param("id") String id);
+
+	int editPasswordById(@Param("id") String id,@Param("password") String password);
 }
