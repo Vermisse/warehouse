@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS `sys_user` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
--- 正在导出表  warehouse.sys_user 的数据：~0 rows (大约)
+-- 正在导出表  warehouse.sys_user 的数据：~1 rows (大约)
 /*!40000 ALTER TABLE `sys_user` DISABLE KEYS */;
 INSERT INTO `sys_user` (`id`, `name`, `password`, `type`, `status`) VALUES
 	(1, 'admin', 'admin', '1', '1');

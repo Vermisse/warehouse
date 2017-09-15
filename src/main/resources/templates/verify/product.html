@@ -1,0 +1,75 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:substituteby='template :: head'></head>
+<body>
+	<div class="wrapper">
+		<div class="sidebar" data-color="purple" data-image="/img/sidebar-5.jpg">
+			<div th:substituteby='template :: menu (${"订单校验"})'></div>
+		</div>
+		<div class="main-panel">
+			<nav th:substituteby='template :: nav (${"商品校验"})'></nav>
+			<div class="content">
+				<div class="container-fluid">
+					<form action="/verify/product.html" method="post">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="card">
+									<div class="content">
+										<div class="row">
+											<div class="col-md-3">
+												<div class="form-group">
+													<input type="text" name="product_id" id="order_id" class="form-control" placeholder="商品编号" />
+													<input type="hidden" name="order_id" th:value="${order_id}" />
+													<input type="text" name="ids" th:each="item : ${ids}" th:value="${item}" />
+												</div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+										<div class="row" th:if="${msg != null}">
+											<div class="col-md-8">
+												<div class="alert alert-danger">
+													<span th:text="${msg}">错误提示</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="card">
+									<div class="content table-responsive table-full-width">
+										<table class="table table-hover table-striped">
+											<thead>
+												<th>商品编码</th>
+												<th>商品名称</th>
+												<th>状态</th>
+											</thead>
+											<tbody>
+												<tr th:each="item : ${list}">
+													<td th:text="${item.product_id}">1</td>
+													<td th:text="${item.product_name}">商品名</td>
+													<td>
+														<span th:if="${item.finish == 1}">已扫描</span>
+														<span th:if="${item.finish == 0}">未扫描</span>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		setInterval(function(){
+			$("#order_id").focus();
+		}, 80);
+	</script>
+</body>
+</html>

@@ -23,4 +23,6 @@ public interface OrderMapper {
 	
 	int queryCount(@Param("id") String id,
 			@Param("status") Integer status);
+
+	List<Map<String, Object>> queryProducts(@Param("order_id") String order_id);
 }

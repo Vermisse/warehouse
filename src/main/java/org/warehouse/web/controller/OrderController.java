@@ -8,7 +8,7 @@ import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.*;
 import org.warehouse.util.*;
-import org.warehouse.web.dao.order.OrderMapper;
+import org.warehouse.web.dao.order.*;
 import org.warehouse.web.service.*;
 
 @Controller
