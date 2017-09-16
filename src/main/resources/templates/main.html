@@ -1,6 +1,15 @@
 <!doctype html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:substituteby='template :: head'></head>
+<!--  Charts Plugin -->
+<script src="/js/chartist.min.js"></script>
+<!-- Light Bootstrap Table DEMO methods, don't include it in your project! -->
+<script src="/js/demo.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		demo.initChartist();
+	});
+</script>
 <body>
 <div class="wrapper">
     <div class="sidebar" data-color="purple" data-image="/img/sidebar-5.jpg">

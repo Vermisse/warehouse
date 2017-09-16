@@ -9,11 +9,11 @@
 		values(#{id}, #{delivery}, 1, #{create_date, jdbcType=DATE})
 	</insert>
 	<insert id="addProduct">
-		insert into order_product(order_id, product_id, product_name)
-		values(#{order_id}, #{product_id}, #{product_name})
+		insert into order_product(order_id, product_id, product_name, count)
+		values(#{order_id}, #{product_id}, #{product_name}, #{count})
 	</insert>
 	<select id="checkOrder" resultType="Map">
-		select t.id,t.delivery,t.status,t.create_date
+		select t.id,t.delivery,t.status,t.create_date,t.accept
 		from `order` t where t.id = #{id}
 	</select>
 	<select id="queryList" resultType="Map">
@@ -29,6 +29,13 @@
 		order by t.create_date desc, t.id
 		limit ${page.num},${page.size}
 	</select>
+	<select id="queryUnfinish" resultType="Map">
+		select t.id,t.delivery,t.status,t.create_date
+		from `order` t
+		where t.status = 2
+		and t.accept = #{accept}
+		order by t.create_date desc, t.id
+	</select>
 	<select id="queryCount" resultType="Integer">
 		select count(*) from `order` t
 		where 1=1
@@ -40,8 +47,13 @@
 		</if>
 	</select>
 	<select id="queryProducts" resultType="Map">
-		select t.id,t.product_id,t.product_name,0 as finish
+		select t.id,t.product_id,t.product_name,t.count,0 as finish
 		from order_product t
 		where order_id = #{order_id}
 	</select>
+	<update id="accept">
+		update `order`
+		set update_date = now(), accept = #{accept}, status = #{new_status}
+		where id = #{id} and status = ${old_status}
+	</update>
 </mapper>

@@ -32,12 +32,14 @@ public class OrderService {
 
 					String product_ids = hssfRow.getCell(0).getStringCellValue();
 					String product_names = hssfRow.getCell(1).getStringCellValue();
-					String delivery = hssfRow.getCell(2).getStringCellValue();
-					Date create_date = hssfRow.getCell(3).getDateCellValue();
-					String order_id = hssfRow.getCell(4).getStringCellValue();
+					String counts = hssfRow.getCell(2).getStringCellValue();
+					String delivery = hssfRow.getCell(3).getStringCellValue();
+					Date create_date = hssfRow.getCell(4).getDateCellValue();
+					String order_id = hssfRow.getCell(5).getStringCellValue();
 					
 					String[] product_id = product_ids.split(",");
 					String[] product_name = product_names.split(",");
+					String[] count = counts.split(",");
 					
 					if(product_id.length != product_name.length)
 						throw new RuntimeException("商品ID和商品名数量不一致");
@@ -49,7 +51,7 @@ public class OrderService {
 					mapper.addOrder(order_id, delivery, create_date);
 					for (int i = 0; i < product_id.length; i++)
 						//添加商品
-						mapper.addProduct(order_id, product_id[i], product_name[i]);
+						mapper.addProduct(order_id, product_id[i], product_name[i], Integer.valueOf(count[i]));
 				}
 			}
 		} finally {

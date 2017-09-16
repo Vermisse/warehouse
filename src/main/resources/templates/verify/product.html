@@ -44,20 +44,22 @@
 											<thead>
 												<th>商品编码</th>
 												<th>商品名称</th>
+												<th>数量</th>
 												<th>状态</th>
 											</thead>
 											<tbody>
 												<tr th:each="item : ${list}"
-													th:classappend="${item.finish == 1}? 'alert-success'">
-													<td th:text="${item.product_id}">1</td>
-													<td th:text="${item.product_name}">商品名</td>
+													th:classappend="${item.finish == 1}? 'chose'">
+													<td th:text="${item.product_id}">商品编码</td>
+													<td th:text="${item.product_name}">商品名称</td>
+													<td th:text="${item.count}">数量</td>
 													<td>
 														<span th:if="${item.finish == 1}">已扫描</span>
 														<span th:if="${item.finish == 0 and item.product_id != '无'}">
 															未扫描
 														</span>
 														<span th:if="${item.finish == 0 and item.product_id == '无'}">
-															<a href="" th:if="${item.finish == 0}">手动扣除</a>
+															<a href="javascript:void(0);" th:onclick="'deduct(' + ${item.id} + ')'">手动扣除</a>
 														</span>
 													</td>
 												</tr>
@@ -73,6 +75,11 @@
 		</div>
 	</div>
 	<script type="text/javascript">
+		var deduct = function (op_id) {
+			$("#product_id").val("!" + op_id);
+			$("form").submit();
+		}
+		
 		setInterval(function(){
 			$("#product_id").focus();
 		}, 80);

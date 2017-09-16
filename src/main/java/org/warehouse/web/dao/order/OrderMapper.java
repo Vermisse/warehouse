@@ -13,7 +13,8 @@ public interface OrderMapper {
 	
 	int addProduct(@Param("order_id") String order_id,
 			@Param("product_id") String product_id,
-			@Param("product_name") String product_name);
+			@Param("product_name") String product_name,
+			@Param("count") Integer count);
 	
 	Map<String, Object> checkOrder(@Param("id") String id);
 	
@@ -21,8 +22,15 @@ public interface OrderMapper {
 			@Param("status") Integer status,
 			@Param("page") Page page);
 	
+	List<Map<String, Object>> queryUnfinish(@Param("accept") Integer accept);
+	
 	int queryCount(@Param("id") String id,
 			@Param("status") Integer status);
 
 	List<Map<String, Object>> queryProducts(@Param("order_id") String order_id);
+	
+	int accept(@Param("id") String order_id,
+			@Param("accept") Integer user_id,
+			@Param("old_status") Integer old_status,
+			@Param("new_status") Integer new_status);
 }

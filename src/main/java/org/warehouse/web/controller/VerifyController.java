@@ -18,7 +18,10 @@ public class VerifyController {
 	private OrderMapper mapper;
 	
 	@RequestMapping(value = "order", method = RequestMethod.GET)
-	String order() {
+	String order(Model model, HttpSession session) {
+		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+		List<Map<String, Object>> list = mapper.queryUnfinish((Integer) user.get("id"));
+		model.addAttribute("list", list);
 		return "verify/order";
 	}
 	
@@ -31,9 +34,12 @@ public class VerifyController {
 			return "verify/order";
 		}
 		if ((Integer) order.get("status") == 1) {
-			return product(id, null, new String[0], model);
+			mapper.accept(id, (Integer) user.get("id"), 1, 2);
+			return product(id, null, new String[0], model, session);
 		}
-		if ((Integer) order.get("status") == 2 && !order.get("accept").equals(user.get("id"))) {
+		if ((Integer) order.get("status") == 2) {
+			if (order.get("accept").equals(user.get("id")))
+				return product(id, null, new String[0], model, session);
 			model.addAttribute("msg", "该订单已被其他人处理！");
 		}
 		if ((Integer) order.get("status") == 3) {
@@ -43,23 +49,35 @@ public class VerifyController {
 	}
 	
 	@RequestMapping("product")
-	String product(String order_id, String product_id, String[] ids, Model model) {
+	String product(String order_id, String product_id, String[] ids, Model model, HttpSession session) {
+		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
 		List<Map<String, Object>> list = mapper.queryProducts(order_id);
-		if (product_id != null) {
+		ids = ids == null ? new String[0] : ids;
+		if (product_id != null) { // 不是第一次进入
 			int state = 0;
-			ids = ids == null ? new String[0] : ids;
+			boolean isEmpty = product_id.startsWith("!"); // 是否是无编码
 			for (Map<String, Object> x : list) {
 				for (String id : ids) {
-					if (state == 0 && product_id.equals(id))
+					if (!isEmpty && state == 0 && product_id.equals(id))
 						state = 1;
-					if (x.get("product_id").equals(id)) {
+					if (id.startsWith("!") && x.get("id").toString().equals(id.substring(1))) {
+						x.put("finish", 1);
+						break;
+					} else if (x.get("product_id").equals(id)) {
 						x.put("finish", 1);
 						break;
 					}
 				}
-				if (state == 0 && x.get("product_id").equals(product_id)) {
-					x.put("finish", 1);
-					state = 2;
+				if(!isEmpty) {
+					if (state == 0 && x.get("product_id").equals(product_id)) {
+						x.put("finish", 1);
+						state = 2;
+					}
+				} else {
+					if (state == 0 && x.get("id").toString().equals(product_id.substring(1))) {
+						x.put("finish", 1);
+						state = 2;
+					}
 				}
 			}
 			switch (state) {
@@ -78,9 +96,15 @@ public class VerifyController {
 				break;
 			}
 		}
-		model.addAttribute("list", list);
-		model.addAttribute("ids", ids);
-		model.addAttribute("order_id", order_id);
-		return "verify/product";
+		
+		if(ids.length == list.size()) {
+			mapper.accept(order_id, (Integer) user.get("id"), 2, 3);
+			return "redirect:/verify/order.html";
+		} else {
+			model.addAttribute("list", list);
+			model.addAttribute("ids", ids);
+			model.addAttribute("order_id", order_id);
+			return "verify/product";
+		}
 	}
 }
