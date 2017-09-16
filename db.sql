@@ -48,10 +48,14 @@ CREATE TABLE IF NOT EXISTS `order_product` (
 
 
 -- 导出  表 warehouse.product 结构
+DROP TABLE IF EXISTS `product`;
 CREATE TABLE IF NOT EXISTS `product` (
   `id` varchar(50) NOT NULL,
   `name` varchar(50) NOT NULL COMMENT '产品名，如果用不到就删除',
-  `count` int(11) NOT NULL COMMENT '库存数量',
+  `count` int(11) NOT NULL COMMENT '库存总数量',
+  `current_count` int(11) NOT NULL COMMENT '当前库存数量',
+  `create_time` date DEFAULT NULL,
+  `update_time` date DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
