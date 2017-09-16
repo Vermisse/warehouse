@@ -56,7 +56,6 @@ public class UserController {
 	 */
 	@RequestMapping(value = "edit", method = RequestMethod.GET)
 	String editPassword(String id, Model model, HttpSession session) {
-		
 		if("0".equals(id)) {
 			Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
 			id = String.valueOf(user.get("id"));

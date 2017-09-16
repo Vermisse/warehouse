@@ -18,9 +18,9 @@
 										<div class="row">
 											<div class="col-md-3">
 												<div class="form-group">
-													<input type="text" name="product_id" id="order_id" class="form-control" placeholder="商品编号" />
+													<input type="text" name="product_id" id="product_id" class="form-control" placeholder="商品编号" />
 													<input type="hidden" name="order_id" th:value="${order_id}" />
-													<input type="text" name="ids" th:each="item : ${ids}" th:value="${item}" />
+													<input type="hidden" name="ids" th:each="item : ${ids}" th:value="${item}" />
 												</div>
 											</div>
 										</div>
@@ -47,12 +47,18 @@
 												<th>状态</th>
 											</thead>
 											<tbody>
-												<tr th:each="item : ${list}">
+												<tr th:each="item : ${list}"
+													th:classappend="${item.finish == 1}? 'alert-success'">
 													<td th:text="${item.product_id}">1</td>
 													<td th:text="${item.product_name}">商品名</td>
 													<td>
 														<span th:if="${item.finish == 1}">已扫描</span>
-														<span th:if="${item.finish == 0}">未扫描</span>
+														<span th:if="${item.finish == 0 and item.product_id != '无'}">
+															未扫描
+														</span>
+														<span th:if="${item.finish == 0 and item.product_id == '无'}">
+															<a href="" th:if="${item.finish == 0}">手动扣除</a>
+														</span>
 													</td>
 												</tr>
 											</tbody>
@@ -68,7 +74,7 @@
 	</div>
 	<script type="text/javascript">
 		setInterval(function(){
-			$("#order_id").focus();
+			$("#product_id").focus();
 		}, 80);
 	</script>
 </body>

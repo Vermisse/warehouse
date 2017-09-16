@@ -74,6 +74,7 @@ public class VerifyController {
 				for (int i = 0; i < ids.length; i++)
 					temp[i] = ids[i];
 				temp[ids.length] = product_id;
+				ids = temp;
 				break;
 			}
 		}
