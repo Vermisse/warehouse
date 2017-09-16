@@ -1,0 +1,42 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:substituteby='template :: head'></head>
+<body>
+	<div class="wrapper">
+		<div class="sidebar" data-color="purple" data-image="/img/sidebar-5.jpg">
+			<div th:substituteby='template :: menu (${"订单校验"})'></div>
+		</div>
+		<div class="main-panel">
+			<nav th:substituteby='template :: nav (${"提示"})'></nav>
+			<div class="content">
+				<div class="container-fluid">
+					<form method="post">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="card">
+									<div class="content">
+										<div class="row">
+											<div class="col-md-8">
+												<div class="alert alert-success">
+													<span th:utext="${msg}">提示</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(function(){
+			setTimeout(function(){
+				window.location.href = 'order.html';
+			}, 3000);
+		});
+	</script>
+</body>
+</html>

@@ -55,18 +55,13 @@
 											</thead>
 											<tbody>
 												<tr th:each="item : ${list}"
-													th:classappend="${item.finish == 1}? 'chose'">
+													th:style="${item.finish == 1}? 'background: #00cc00; color: white;'">
 													<td th:text="${item.product_id}">商品编码</td>
 													<td th:text="${item.product_name}">商品名称</td>
 													<td th:text="${item.count}">数量</td>
 													<td>
 														<span th:if="${item.finish == 1}">已扫描</span>
-														<span th:if="${item.finish == 0 and item.product_id != '无'}">
-															未扫描
-														</span>
-														<span th:if="${item.finish == 0 and item.product_id == '无'}">
-															<a href="javascript:void(0);" th:onclick="'deduct(' + ${item.id} + ')'">手动扣除</a>
-														</span>
+														<span th:if="${item.finish == 0}">未扫描</span>
 													</td>
 												</tr>
 											</tbody>
@@ -80,12 +75,7 @@
 			</div>
 		</div>
 	</div>
-	<script type="text/javascript">
-		var deduct = function (op_id) {
-			$("#product_id").val("!" + op_id);
-			$("form").submit();
-		}
-		
+	<script type="text/javascript" th:inline="javascript">
 		setInterval(function(){
 			$("#product_id").focus();
 		}, 80);

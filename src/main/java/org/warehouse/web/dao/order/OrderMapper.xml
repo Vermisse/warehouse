@@ -53,7 +53,7 @@
 		order by t.create_date desc, t.id
 	</select>
 	<select id="queryProducts" resultType="Map">
-		select t.id,t.product_id,t.product_name,t.count,0 as finish
+		select t.id,t.product_id,t.product_name,t.count,case product_id when '无' then 1 else 0 end as finish
 		from order_product t
 		where order_id = #{order_id}
 	</select>

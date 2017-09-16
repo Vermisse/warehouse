@@ -53,32 +53,27 @@ public class VerifyController {
 		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
 		List<Map<String, Object>> list = mapper.queryProducts(order_id);
 		ids = ids == null ? new String[0] : ids;
+		int count = 0;
+		boolean commit = true;
 		if (product_id != null) { // 不是第一次进入
 			int state = 0;
-			boolean isEmpty = product_id.startsWith("!"); // 是否是无编码
 			for (Map<String, Object> x : list) {
 				for (String id : ids) {
-					if (!isEmpty && state == 0 && product_id.equals(id))
+					if (state == 0 && product_id.equals(id))
 						state = 1;
-					if (id.startsWith("!") && x.get("id").toString().equals(id.substring(1))) {
-						x.put("finish", 1);
-						break;
-					} else if (x.get("product_id").equals(id)) {
+					if (x.get("product_id").equals(id)) {
 						x.put("finish", 1);
 						break;
 					}
 				}
-				if(!isEmpty) {
-					if (state == 0 && x.get("product_id").equals(product_id)) {
-						x.put("finish", 1);
-						state = 2;
-					}
-				} else {
-					if (state == 0 && x.get("id").toString().equals(product_id.substring(1))) {
-						x.put("finish", 1);
-						state = 2;
-					}
+				if (state == 0 && x.get("product_id").equals(product_id)) {
+					x.put("finish", 1);
+					state = 2;
 				}
+				if (x.get("product_id").equals("无"))
+					commit = false;
+				if (String.valueOf(x.get("finish")).equals("1"))
+					count++;
 			}
 			switch (state) {
 			case 0:
@@ -96,10 +91,21 @@ public class VerifyController {
 				break;
 			}
 		}
-		
-		if(ids.length == list.size()) {
+		System.out.println(count);
+		if(count == list.size()) {
 			mapper.accept(order_id, (Integer) user.get("id"), 2, 3);
-			return "redirect:/verify/order.html";
+			
+			if (commit) {
+				return "redirect:/verify/order.html";
+			} else {
+				String msg = "订单[" + order_id + "]存在以下无编号商品，请再次核对：<br />";
+				for (Map<String, Object> x : list) {
+					if(x.get("product_id").equals("无"))
+						msg += "[" + x.get("product_name") + "]<br />";
+				}
+				model.addAttribute("msg", msg);
+				return "verify/result";
+			}
 		} else {
 			model.addAttribute("list", list);
 			model.addAttribute("ids", ids);
