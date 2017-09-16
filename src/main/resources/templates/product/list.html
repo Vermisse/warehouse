@@ -31,6 +31,7 @@
 												<div class="form-group">
 													<button type="submit" class="btn btn-info btn-fill">查询</button>
 													<button type="button" class="btn btn-success btn-fill" onclick="chose()">导入</button>
+													<button type="button" class="btn btn-success btn-fill" onclick="save()">保存</button>
 												</div>
 											</div>
 										</div>
@@ -60,10 +61,11 @@
 											</thead>
 											<tbody>
 												<tr th:each="item : ${list}">
+													<input name="idValue" type="hidden" th:value="${item.id}" value="当前总库存" />
 													<td th:text="${item.id}">1</td>
 													<td th:text="${item.name}">名字</td>
 													<td th:text="${item.count}">总库存</td>
-													<td th:text="${item.current_count}">当前总库存</td>
+													<td><input name="current_count" type="text" th:value="${item.current_count}" value="当前总库存" /></td>
 													<td th:text="${item.create_time}">上传日期</td>
 												</tr>
 											</tbody>
@@ -97,6 +99,7 @@
 				.attr("enctype", "multipart/form-data")
 				.submit();
 		});
+		
 	</script>
 </body>
 </html>
