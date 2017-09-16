@@ -108,9 +108,15 @@
 				<button type="button" class="btn"
 					th:disabled="${page.cur le page.prev}"
 					th:onclick="'page(' + ${page.prev} + ')'">上一页</button>
+				<span class="btn" disabled="disabled">
+					<span th:text="${page.cur}">1</span>/<span th:text="${page.max}">10</span>
+				</span>
 				<button type="button" class="btn"
 					th:disabled="${page.cur ge page.next}"
 					th:onclick="'page(' + ${page.next} + ')'">下一页</button>
+			</div>
+			<div style="text-align:center;">
+				<label>共<span th:text="${page.count}">N</span>条</label>
 			</div>
 		</div>
 	</div>

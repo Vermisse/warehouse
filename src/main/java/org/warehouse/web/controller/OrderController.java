@@ -22,9 +22,9 @@ public class OrderController {
 	private OrderService service;
 
 	@RequestMapping("list")
-	String list(String id, Integer status, Page page, Model model) {
-		List<Map<String, Object>> list = mapper.queryList(id, status, page);
-		int count = mapper.queryCount(id, status);
+	String list(String id, Integer status, String create_date, Page page, Model model) {
+		List<Map<String, Object>> list = mapper.queryList(id, status, create_date, page);
+		int count = mapper.queryCount(id, status, create_date);
 		page.setCount(count);
 
 		model.addAttribute("list", list);

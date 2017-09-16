@@ -9,6 +9,7 @@ import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.warehouse.web.dao.*;
+import org.warehouse.web.dao.order.OrderMapper;
 import org.warehouse.web.dao.user.UserMapper;
 
 @Controller
@@ -17,11 +18,17 @@ public class LoginController {
 	@Autowired
 	private UserMapper mapper;
 	
+	@Autowired
+	private OrderMapper order;
+	
 	@RequestMapping("/")
-	String index(HttpSession session) {
-		if (session.getAttribute("user") != null)
-			return "main";
-		return "login";
+	String index(String create_date, Model model, HttpSession session) {
+		if (session.getAttribute("user") == null)
+			return "login";
+		
+		order.queryPie(create_date).forEach(x -> model.addAttribute("v" + x.get("status"), x.get("cnt")));
+		model.addAttribute("create_date", create_date);
+		return "main";
 	}
 
 	@RequestMapping("/login.html")

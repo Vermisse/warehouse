@@ -30,6 +30,12 @@
 												<div class="alert alert-danger">
 													<span th:text="${msg}">错误提示</span>
 												</div>
+												<audio src="/sound/6178.wav" id="audio" style="display:none"></audio>
+												<script type="text/javascript">
+													$(function(){
+														document.getElementById("audio").play();
+													});
+												</script>
 											</div>
 										</div>
 									</div>

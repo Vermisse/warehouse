@@ -13,6 +13,9 @@
     }
 }
 
+* {
+	font-family: "Microsoft YaHei", Helvetica, Arial, sans-serif;
+}
 .chose {
 	color: #00cc00;
 }
