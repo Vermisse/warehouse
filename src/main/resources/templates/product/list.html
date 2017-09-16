@@ -1,0 +1,97 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:substituteby='template :: head'></head>
+<body>
+	<div class="wrapper">
+		<div class="sidebar" data-color="purple" data-image="/img/sidebar-5.jpg">
+			<div th:substituteby='template :: menu (${"产品管理"})'></div>
+		</div>
+		<div class="main-panel">
+			<nav th:substituteby='template :: nav (${"产品管理"})'></nav>
+			<div class="content">
+				<div class="container-fluid">
+					<form method="post">
+						<div class="row">
+							<div class="col-md-12">
+								<div class="card">
+									<div class="content">
+										<div class="row">
+											<div class="col-md-3">
+												<div class="form-group">
+													<input type="text" name="id" class="form-control" placeholder="产品号" />
+													<input type="file" name="file" style="display:none;" />
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<button type="submit" class="btn btn-info btn-fill">查询</button>
+													<button type="button" class="btn btn-success btn-fill" onclick="chose()">导入</button>
+												</div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+										<div class="row" th:if="${msg != null}">
+											<div class="col-md-8">
+												<div class="alert alert-danger">
+													<span th:text="${msg}">错误提示</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" th:if="${page != null}">
+							<div class="col-md-12">
+								<div class="card">
+									<div class="content table-responsive table-full-width">
+										<table class="table table-hover table-striped">
+											<thead>
+												<th>产品号</th>
+												<th>产品名</th>
+												<th>总库存</th>
+												<th>当前库存</th>
+												<th>上传日期</th>
+											</thead>
+											<tbody>
+												<tr th:each="item : ${list}">
+													<td th:text="${item.id}">1</td>
+													<td th:text="${item.name}">名字</td>
+													<td th:text="${item.count}">总库存</td>
+													<td th:text="${item.current_count}">当前总库存</td>
+													<td th:text="${item.create_time}">上传日期</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row" th:substituteby='template :: page'></div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var chose = function() {
+			$("form .form-group input[type='file']").val("").click();
+		}
+
+		$("input[type='file']").change(function() {
+			var rgx = "(.xls|.xlsx)$";
+			var re = new RegExp(rgx);
+			if (!re.test($(this).val())) {
+				alert("文件格式不正确，只能上传.xls|.xlsx格式");
+				$(this).val("");
+				return;
+			}
+
+			$("form")
+				.attr("action", "upload.html")
+				.attr("enctype", "multipart/form-data")
+				.submit();
+		});
+	</script>
+</body>
+</html>

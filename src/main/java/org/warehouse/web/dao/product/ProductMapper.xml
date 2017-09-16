@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.4//EN"   
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.warehouse.web.dao.product.ProductMapper">
+
+	<insert id="addProduct">
+		insert into `product`(id, name, count,current_count, create_time, update_time)
+		values(#{id}, #{name}, #{count},#{count}, now(), now())
+	</insert>
+	<select id="checkProduct" resultType="Map">
+		select t.id,t.name,t.count,t.current_count, t.create_time,t.update_time 
+		from `product` t where t.id = #{id}
+	</select>
+	<select id="queryList" resultType="Map">
+		select t.id,t.name,t.count,t.current_count,t.create_time,t.update_time 
+		from `product` t
+		where 1=1
+		<if test="id != null and id != ''">
+			and t.id like concat('%', #{id}, '%')
+		</if>
+		<if test="create_time != null and create_time != '-1'">
+			and t.create_time like concat('%', #{create_time}, '%')
+		</if>
+		order by t.create_time desc, t.id
+		limit ${page.num},${page.size}
+	</select>
+	<select id="queryCount" resultType="Integer">
+		select count(*) from `product` t
+		where 1=1
+		<if test="id != null and id != ''">
+			and t.id like concat('%', #{id}, '%')
+		</if>
+		<if test="create_time != null and create_time != '-1'">
+			and t.create_time like concat('%', #{create_time}, '%')
+		</if>
+	</select>
+	<update id="updateProduct">
+		update `product`
+		set update_time=now()
+		<if test="count != null and count != '-1'">
+			, count = count+${count} 
+			, current_count = current_count+${count} 
+		</if>
+		<if test="current_count != null and current_count != '-1'">
+			, current_count = current_count+${current_count} 
+		</if>
+		where id = #{id}
+	</update>
+</mapper>
