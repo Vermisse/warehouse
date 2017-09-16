@@ -47,4 +47,13 @@
 		</if>
 		where id = #{id}
 	</update>
+	
+	<update id="editProductById">
+		update `product`
+		set update_time=now()
+		<if test="current_count != null and current_count != '-1'">
+			, current_count = ${current_count} 
+		</if>
+		where id = #{id}
+	</update>
 </mapper>

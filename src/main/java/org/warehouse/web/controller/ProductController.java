@@ -43,4 +43,14 @@ public class ProductController {
 			return "product/list";
 		}
 	}
+	
+	@RequestMapping("edit")
+	@ResponseBody
+	String edit(String id, int current_count, Model model) {
+		int result = mapper.editProductById(id, current_count);
+		if(result < 1) {
+			return "{\"err\":1001}";
+		}
+		return "{\"err\":0}";
+	}
 }

@@ -23,4 +23,7 @@ public interface ProductMapper {
 	int updateProduct(@Param("id") String id,
 			@Param("count") Integer count,
 			@Param("current_count") Integer current_count);
+
+	int editProductById(@Param("id") String id,
+			@Param("current_count") Integer current_count);
 }
