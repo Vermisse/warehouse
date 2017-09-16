@@ -53,8 +53,8 @@
 				<p>订单管理</p>
 			</a>
 		</li>
-		<li>
-			<a href="typography.html">
+		<li th:classappend="${title == '库存管理'}? 'active'">
+			<a href="/product/list.html">
 				<i class="pe-7s-news-paper"></i>
 				<p>库存管理</p>
 			</a>
