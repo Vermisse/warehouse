@@ -1,0 +1,59 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:substituteby='template :: head'></head>
+<body>
+	<div class="wrapper">
+		<div class="sidebar" data-color="purple" data-image="/img/sidebar-5.jpg">
+			<div th:substituteby='template :: menu (${"库存管理"})'></div>
+		</div>
+		<div class="main-panel">
+			<nav th:substituteby='template :: nav (${"产品新增"})'></nav>
+			<div class="content">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-md-12">
+							<div class="card">
+								<div class="content">
+									<form method="post">
+										<div class="row">
+											<div class="col-md-3">
+												<div class="form-group">
+													<input type="text" class="form-control" name="name" placeholder="产品名" required="required" />
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<input type="text" class="form-control" name="id" placeholder="产品编号" required="required" />
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<input type="text" class="form-control" name="count" placeholder="产品库存" required="required" />
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<button type="submit" class="btn btn-info btn-fill">保存</button>
+													<button type="button" class="btn btn-success btn-fill" onclick="window.location.href='list.html'">返回</button>
+												</div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+										<div class="row" th:if="${msg != null}">
+											<div class="col-md-8">
+												<div class="alert alert-danger">
+													<span th:text="${msg}">错误提示</span>
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -18,19 +18,25 @@
 										<div class="row">
 											<div class="col-md-3">
 												<div class="form-group">
-													<input type="text" name="id" class="form-control" placeholder="产品号" />
+													<input th:value="${productName}" type="text" name="productName" class="form-control" placeholder="产品名" />
+												</div>
+											</div>
+											<div class="col-md-3">
+												<div class="form-group">
+													<input th:value="${id}" type="text" name="id" class="form-control" placeholder="产品号" />
 													<input type="file" name="file" style="display:none;" />
 												</div>
 											</div>
 											<div class="col-md-3">
 												<div class="form-group">
-													<input type="date" name="create_time" class="form-control" />
+													<input th:value="${create_time}" type="date" name="create_time" class="form-control" />
 												</div>
 											</div>
-											<div class="col-md-2">
+											<div class="col-md-3">
 												<div class="form-group">
 													<button type="submit" class="btn btn-info btn-fill">查询</button>
 													<button type="button" class="btn btn-success btn-fill" onclick="chose()">导入</button>
+													<button type="button" class="btn btn-primary btn-fill" onclick="window.location.href='add.html'">新增</button>
 												</div>
 											</div>
 										</div>
@@ -56,21 +62,42 @@
 												<th>产品名</th>
 												<th>总库存</th>
 												<th>当前库存</th>
+												<th>新增库存</th>
 												<th>上传日期</th>
+												<th>上次修改日期</th>
+												<th>操作人</th>
+												<th>操作</th>
 											</thead>
 											<tbody>
-												<tr th:each="item : ${list}">
+												<tr th:each="item : ${list}" th:style="${item.alert == 1} ? 'background:red;'">
 <!-- 													<input name="idValue" type="hidden" th:value="${item.id}" value="当前总库存" /> -->
 													<td th:text="${item.id}">1</td>
-													<td th:text="${item.name}">名字</td>
-													<td th:text="${item.count}">总库存</td>
 													<td>
-														<span th:text="${item.current_count}" onclick="_toggle(this, '0', '-1')"></span>
-														<span th:onclick="'_toggle(this, 1, \'' + ${item.id} + '\')'"  style="display: none;">
-															<input name="current_count" type="text" th:value="${item.current_count}" value="当前总库存" />
+														<span th:text="${item.name}" onclick="_toggle(this)"></span>
+														<span  style="display: none;">
+															<input th:id="'name_' + ${item.id}" name="name" type="text" th:value="${item.name}" value="产品名字" />
+														</span>
+													</td>
+													<td>
+														<span th:text="${item.count}" onclick="_toggle(this)"></span>
+														<span   style="display: none;">
+															<input th:id="'count_' + ${item.id}" type="text" th:value="${item.count}" value="总库存" />
 														</span> 
 													</td>
+													<td>
+														<span th:text="${item.current_count}" onclick="_toggle(this)"></span>
+														<span   style="display: none;">
+															<input th:id="'current_count_' + ${item.id}"  name="current_count" type="text" th:value="${item.current_count}" value="当前总库存" />
+														</span> 
+													</td>
+													<td th:text="${item.new_inventory}">新增库存</td>
 													<td th:text="${item.create_time}">上传日期</td>
+													<td th:text="${item.update_time}">修改日期</td>
+													<td th:text="${item.uName}">操作人</td>
+													<td>
+														<button type="button" class="btn btn-warning btn-fill" th:onclick="'_save(\'' + ${item.id} + '\')'">保存</button>
+														<button type="button" class="btn btn-default btn-fill" th:onclick="'_del(\'' + ${item.id} + '\')'">删除</button>
+													</td>
 												</tr>
 											</tbody>
 										</table>
@@ -104,11 +131,51 @@
 				.submit();
 		});
 		
-		function _toggle(obj, _type, _val) {
+		// 切换
+		function _toggle(obj) {
 			$(obj).hide();
 			$($(obj).siblings()).show();
-			if("1" == _type) {
-				var json = {"id":_val, "current_count":$($(obj).children()).val()};
+		}
+		
+		// 保存当前行被修改的数据
+		function _save(_id) {
+			var name = $('#name_' + _id).val();
+			var count = $('#count_' + _id).val();
+			var current_count = $('#current_count_' + _id).val();
+			var json = {"id":_id, "name":name,"current_count":current_count,"count":count,"del":0};
+			
+			if(!/^[0-9]+$/.test(count)) {
+				alert("总库存不能小于0");
+				return;
+			}
+			if(!/^[0-9]+$/.test(current_count)) {
+				alert("当前库存不能小于0");
+				return;
+			}
+			
+			$.ajax({
+			    url:"edit.html",    //请求的url地址
+			    dataType:"json",   //返回格式为json
+			    data:json,    //参数值
+			    type:"post",   //请求方式
+			    success:function(data){
+			        //请求成功时处理
+			        alert("修改成功");
+			        window.location.reload();
+			    },
+			    error:function(){
+			        //请求出错处理
+			    }
+			});
+		}
+		
+		// 删除
+		function _del(_id) {
+			if(confirm("确定要删除产品" + _id + "吗？")) {
+				var name = $('#name_' + _id).val();
+				var count = $('#count_' + _id).val();
+				var current_count = $('#current_count_' + _id).val();
+				var json = {"id":_id, "name":name,"current_count":current_count,"count":count, "del":1};
 				$.ajax({
 				    url:"edit.html",    //请求的url地址
 				    dataType:"json",   //返回格式为json
@@ -116,7 +183,7 @@
 				    type:"post",   //请求方式
 				    success:function(data){
 				        //请求成功时处理
-				        alert("修改成功");
+				        alert("刪除成功");
 				        window.location.reload();
 				    },
 				    error:function(){

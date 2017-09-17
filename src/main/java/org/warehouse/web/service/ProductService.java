@@ -17,7 +17,7 @@ public class ProductService {
 	private ProductMapper mapper;
 	
 	@Transactional
-	public void save(InputStream is) throws Exception {
+	public void save(InputStream is, int userId) throws Exception {
 		HSSFWorkbook hssfWorkbook = new HSSFWorkbook(is);
 		try {
 			for (int numSheet = 0; numSheet < hssfWorkbook.getNumberOfSheets(); numSheet++) {
@@ -29,9 +29,15 @@ public class ProductService {
 					HSSFRow hssfRow = hssfSheet.getRow(rowNum);
 					if (hssfRow == null)
 						continue;
-
-					String name = hssfRow.getCell(0).getStringCellValue();
-					String id = hssfRow.getCell(1).getStringCellValue();
+					String name = "";
+					String id = "";
+					try {
+						name = hssfRow.getCell(0).getStringCellValue().trim();
+						id = hssfRow.getCell(1).getStringCellValue().trim();
+					} catch (Exception e) {
+						name = String.valueOf((int) hssfRow.getCell(0).getNumericCellValue()).replace(".0", "").trim();
+						id = String.valueOf((int) hssfRow.getCell(1).getNumericCellValue()).replace(".0", "").trim();
+					}
 					Integer count = (int) hssfRow.getCell(2).getNumericCellValue();
 					
 					if(mapper.checkProduct(id) != null) {
@@ -39,7 +45,7 @@ public class ProductService {
 						mapper.updateProduct(id, count, 0);
 					} else {
 						// 添加产品
-						mapper.addProduct(id, name, count);
+						mapper.addProduct(id, name, count, userId);
 					}
 				}
 			}

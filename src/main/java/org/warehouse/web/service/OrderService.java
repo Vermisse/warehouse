@@ -30,12 +30,12 @@ public class OrderService {
 					if (hssfRow == null)
 						continue;
 
-					String product_ids = hssfRow.getCell(0).getStringCellValue();
-					String product_names = hssfRow.getCell(1).getStringCellValue();
-					String counts = hssfRow.getCell(2).getStringCellValue();
-					String delivery = hssfRow.getCell(3).getStringCellValue();
+					String product_ids = hssfRow.getCell(0).getStringCellValue().trim();
+					String product_names = hssfRow.getCell(1).getStringCellValue().trim();
+					String counts = hssfRow.getCell(2).getStringCellValue().trim();
+					String delivery = hssfRow.getCell(3).getStringCellValue().trim();
 					Date create_date = hssfRow.getCell(4).getDateCellValue();
-					String order_id = hssfRow.getCell(5).getStringCellValue();
+					String order_id = hssfRow.getCell(5).getStringCellValue().trim();
 					
 					String[] product_id = product_ids.split(",");
 					String[] product_name = product_names.split(",");

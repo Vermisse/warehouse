@@ -5,29 +5,43 @@
 <mapper namespace="org.warehouse.web.dao.product.ProductMapper">
 
 	<insert id="addProduct">
-		insert into `product`(id, name, count,current_count, create_time, update_time)
-		values(#{id}, #{name}, #{count},#{count}, now(), now())
+		insert into `product`(id, name, count,current_count, new_inventory, create_time, update_time, accept, del_state)
+		values(#{id}, #{name}, #{count},#{count}, #{count}, now(), now(), #{accept}, 0)
 	</insert>
 	<select id="checkProduct" resultType="Map">
-		select t.id,t.name,t.count,t.current_count, t.create_time,t.update_time 
-		from `product` t where t.id = #{id}
+		select t.id,t.name,t.count,t.current_count,t.new_inventory, t.create_time,t.update_time,t.accept,t.del_state  
+		from `product` t where t.id = #{id} and t.del_state=0 
 	</select>
 	<select id="queryList" resultType="Map">
-		select t.id,t.name,t.count,t.current_count,t.create_time,t.update_time 
-		from `product` t
-		where 1=1
+		select t.id,t.name,t.count,t.current_count,
+		t.new_inventory,t.create_time,t.update_time,
+		t.accept,t.del_state,u.name uName, 
+		case 
+		when 
+			t.current_count/ t.count &lt; 0.15 
+		then 
+			1 
+		else 
+			0
+		end alert  
+		from `product` t left join sys_user u 
+		on t.accept = u.id 
+		where t.del_state=0 
 		<if test="id != null and id != ''">
 			and t.id like concat('%', #{id}, '%')
+		</if>
+		<if test="name != null and name != ''">
+			and t.name like concat('%', #{name}, '%')
 		</if>
 		<if test="create_time != null and create_time != '-1'">
 			and t.create_time like concat('%', #{create_time}, '%')
 		</if>
-		order by t.create_time desc, t.id
+		order by t.update_time desc, t.id
 		limit ${page.num},${page.size}
 	</select>
 	<select id="queryCount" resultType="Integer">
 		select count(*) from `product` t
-		where 1=1
+		where t.del_state=0 
 		<if test="id != null and id != ''">
 			and t.id like concat('%', #{id}, '%')
 		</if>
@@ -48,11 +62,24 @@
 		where id = #{id}
 	</update>
 	
+	<!-- 修改库存 -->
 	<update id="editProductById">
 		update `product`
 		set update_time=now()
+		<if test="count != null">
+			, name = #{name} 
+		</if>
+		<if test="count != null and count != '-1'">
+			, count = ${count} 
+		</if>
 		<if test="current_count != null and current_count != '-1'">
 			, current_count = ${current_count} 
+		</if>
+		<if test="accept != null">
+			, accept = #{accept} 
+		</if>
+		<if test="del_state != null">
+			, del_state = #{del_state} 
 		</if>
 		where id = #{id}
 	</update>
