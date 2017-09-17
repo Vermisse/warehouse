@@ -91,7 +91,6 @@ public class VerifyController {
 				break;
 			}
 		}
-		System.out.println(count);
 		if(count == list.size()) {
 			mapper.accept(order_id, (Integer) user.get("id"), 2, 3);
 			
