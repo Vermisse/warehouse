@@ -39,12 +39,12 @@ public class UserController {
 	String add(String name, String password, Model model) {
 		if(mapper.queryUser(name, null) != null) {
 			model.addAttribute("msg", "帐号已存在！");
-			return "/user/add";
+			return "user/add";
 		}
 		int result = mapper.addUser(name, password);
 		if(result == 0) {
 			model.addAttribute("msg", "保存失败！");
-			return "/user/add";
+			return "user/add";
 		}
 		return "redirect:/user/list.html";
 	}
@@ -64,7 +64,7 @@ public class UserController {
 		Map map = mapper.queryUserById(id);
 		if(map != null) {
 			model.addAttribute("map", map);
-			return "/user/edit";
+			return "user/edit";
 		}
 		return "redirect:/user/list.html";
 	}
@@ -80,7 +80,7 @@ public class UserController {
 		if(result == 0) {
 			model.addAttribute("msg", "保存失败！");
 			model.addAttribute("id", userId);
-			return "/user/edit";
+			return "user/edit";
 		}
 		return "redirect:/user/list.html";
 	}
