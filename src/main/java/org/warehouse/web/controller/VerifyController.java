@@ -43,6 +43,8 @@ public class VerifyController {
 			model.addAttribute("msg", "该订单已被其他人处理！");
 		}
 		if ((Integer) order.get("status") == 3) {
+			List<Map<String, Object>> list = mapper.queryProducts(id);
+			model.addAttribute("product", list);
 			model.addAttribute("msg", "该订单已处理完成！");
 		}
 		return "verify/order";
@@ -54,35 +56,39 @@ public class VerifyController {
 		List<Map<String, Object>> list = mapper.queryProducts(order_id);
 		ids = ids == null ? new String[0] : ids;
 		int count = 0;
+		boolean exist = false;
+		List<String> idsList = new ArrayList<String>(Arrays.asList(ids));
 		boolean commit = true;
 		if (product_id != null) { // 不是第一次进入
 			int state = 0;
 			for (Map<String, Object> x : list) {
-				for (String id : ids) {
-					if (state == 0 && product_id.equals(id))
-						state = 1;
-					if (x.get("product_id").equals(id)) {
+				for (int i = 0; i < idsList.size(); i++) {
+					if (x.get("product_id").equals(idsList.get(i))) {
 						x.put("finish", 1);
+						idsList.remove(i);
 						break;
 					}
 				}
+				boolean finish = String.valueOf(x.get("finish")).equals("1");
 				if (state == 0 && x.get("product_id").equals(product_id)) {
-					x.put("finish", 1);
-					state = 2;
+					if (finish) {
+						exist = true;
+					} else {
+						x.put("finish", 1);
+						state = 1;
+						count++;
+					}
 				}
 				if (x.get("product_id").equals("无"))
 					commit = false;
-				if (String.valueOf(x.get("finish")).equals("1"))
+				if (finish)
 					count++;
 			}
 			switch (state) {
 			case 0:
-				model.addAttribute("msg", "该订单无此产品！");
+				model.addAttribute("msg", exist ? "该商品已扫描！" : "该订单无此商品！");
 				break;
 			case 1:
-				model.addAttribute("msg", "该产品已扫描！");
-				break;
-			case 2:
 				String[] temp = new String[ids.length + 1];
 				for (int i = 0; i < ids.length; i++)
 					temp[i] = ids[i];
@@ -92,6 +98,7 @@ public class VerifyController {
 			}
 		}
 		if(count == list.size()) {
+			// 订单扫描完毕
 			mapper.accept(order_id, (Integer) user.get("id"), 2, 3);
 			
 			if (commit) {

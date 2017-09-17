@@ -56,6 +56,28 @@
 								</div>
 							</div>
 						</div>
+						<div class="row" th:if="${product != null}">
+							<div class="col-md-12">
+								<div class="card">
+									<div class="content table-responsive table-full-width">
+										<table class="table table-hover table-striped">
+											<thead>
+												<th>商品编码</th>
+												<th>商品名称</th>
+												<th>状态</th>
+											</thead>
+											<tbody>
+												<tr th:each="item : ${product}">
+													<td th:text="${item.product_id}">商品编码</td>
+													<td th:text="${item.product_name}">商品名称</td>
+													<td>已扫描</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
 					</form>
 				</div>
 			</div>

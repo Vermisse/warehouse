@@ -13,8 +13,7 @@ public interface OrderMapper {
 	
 	int addProduct(@Param("order_id") String order_id,
 			@Param("product_id") String product_id,
-			@Param("product_name") String product_name,
-			@Param("count") Integer count);
+			@Param("product_name") String product_name);
 	
 	Map<String, Object> checkOrder(@Param("id") String id);
 	

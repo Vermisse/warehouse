@@ -9,8 +9,8 @@
 		values(#{id}, #{delivery}, 1, #{create_date, jdbcType=DATE})
 	</insert>
 	<insert id="addProduct">
-		insert into order_product(order_id, product_id, product_name, count)
-		values(#{order_id}, #{product_id}, #{product_name}, #{count})
+		insert into order_product(order_id, product_id, product_name)
+		values(#{order_id}, #{product_id}, #{product_name})
 	</insert>
 	<select id="checkOrder" resultType="Map">
 		select t.id,t.delivery,t.status,t.create_date,t.accept
@@ -53,7 +53,7 @@
 		order by t.create_date desc, t.id
 	</select>
 	<select id="queryProducts" resultType="Map">
-		select t.id,t.product_id,t.product_name,t.count,case product_id when '无' then 1 else 0 end as finish
+		select t.id,t.product_id,t.product_name,case product_id when '无' then 1 else 0 end as finish
 		from order_product t
 		where order_id = #{order_id}
 	</select>

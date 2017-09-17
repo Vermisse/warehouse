@@ -19,6 +19,7 @@
 											<div class="col-md-8">
 												<div class="alert alert-success">
 													<span th:utext="${msg}">提示</span>
+													<audio src="/sound/fx.mp3" id="audio" style="display:none"></audio>
 												</div>
 											</div>
 										</div>
@@ -33,9 +34,10 @@
 	</div>
 	<script type="text/javascript">
 		$(function(){
+			document.getElementById("audio").play();
 			setTimeout(function(){
 				window.location.href = 'order.html';
-			}, 5000);
+			}, 1000);
 		});
 	</script>
 </body>
