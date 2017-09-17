@@ -35,22 +35,22 @@
 		<a href="javascript:;" class="simple-text">点创物流-仓库管理系统</a>
 	</div>
 	<ul class="nav">
-		<li th:classappend="${title == '首页'}? 'active'">
+		<li th:classappend="${title == '作业统计'}? 'active'">
 			<a href="/">
 				<i class="pe-7s-graph"></i>
-				<p>首页</p>
+				<p>作业统计</p>
 			</a>
 		</li>
-		<li th:classappend="${title == '用户管理'}? 'active'">
-			<a href="/user/list.html">
-				<i class="pe-7s-user"></i>
-				<p>用户管理</p>
-			</a>
-		</li>
-		<li th:classappend="${title == '订单管理'}? 'active'">
+		<li th:classappend="${title == '订单导入'}? 'active'">
 			<a href="/order/list.html">
 				<i class="pe-7s-note2"></i>
-				<p>订单管理</p>
+				<p>订单导入</p>
+			</a>
+		</li>
+		<li th:classappend="${title == '订单检验'}? 'active'">
+			<a href="/verify/order.html">
+				<i class="pe-7s-science"></i>
+				<p>订单检验</p>
 			</a>
 		</li>
 		<li th:classappend="${title == '库存管理'}? 'active'">
@@ -59,32 +59,12 @@
 				<p>库存管理</p>
 			</a>
 		</li>
-		<li th:classappend="${title == '订单校验'}? 'active'">
-			<a href="/verify/order.html">
-				<i class="pe-7s-science"></i>
-				<p>订单校验</p>
+		<li th:classappend="${title == '用户管理'}? 'active'">
+			<a href="/user/list.html">
+				<i class="pe-7s-user"></i>
+				<p>用户管理</p>
 			</a>
 		</li>
-		<!-- 
-		<li>
-			<a href="maps.html">
-				<i class="pe-7s-map-marker"></i>
-				<p>Maps</p>
-			</a>
-		</li>
-		<li>
-			<a href="notifications.html">
-				<i class="pe-7s-bell"></i>
-				<p>Notifications</p>
-			</a>
-		</li>
-		<li class="active-pro">
-			<a href="upgrade.html">
-				<i class="pe-7s-rocket"></i>
-				<p>Upgrade to PRO</p>
-			</a>
-		</li>
-		-->
 	</ul>
 </div>
 <nav class="navbar navbar-default navbar-fixed" th:fragment="nav (title)">

@@ -29,15 +29,9 @@ public class ProductService {
 					HSSFRow hssfRow = hssfSheet.getRow(rowNum);
 					if (hssfRow == null)
 						continue;
-					String name = "";
-					String id = "";
-					try {
-						name = hssfRow.getCell(0).getStringCellValue().trim();
-						id = hssfRow.getCell(1).getStringCellValue().trim();
-					} catch (Exception e) {
-						name = String.valueOf((int) hssfRow.getCell(0).getNumericCellValue()).replace(".0", "").trim();
-						id = String.valueOf((int) hssfRow.getCell(1).getNumericCellValue()).replace(".0", "").trim();
-					}
+					String name = getCell(hssfRow, 0);
+					String id =  getCell(hssfRow, 1);
+					
 					Integer count = (int) hssfRow.getCell(2).getNumericCellValue();
 					
 					if(mapper.checkProduct(id) != null) {
@@ -52,5 +46,15 @@ public class ProductService {
 		} finally {
 			hssfWorkbook.close();
 		}
+	}
+	
+	public String getCell(HSSFRow hssfRow, int i) {
+		String str = "";
+		try {
+			str = hssfRow.getCell(i).getStringCellValue().trim();
+		} catch (Exception e) {
+			str = String.valueOf((int) hssfRow.getCell(i).getNumericCellValue()).replace(".0", "").trim();
+		}
+		return str;
 	}
 }
