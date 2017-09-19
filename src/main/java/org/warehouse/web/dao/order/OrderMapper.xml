@@ -71,4 +71,22 @@
 		</if>
 		group by t.status
 	</select>
+	<update id="edit">
+		update order_product t
+		set t.product_id = #{product_id}, t.product_name = #{product_name}
+		where t.id = #{id}
+	</update>
+	<delete id="delProduct">
+		delete from order_product
+		where 1=1
+		<if test="id != null">
+			and id = #{id}
+		</if>
+		<if test="order_id != null">
+			and order_id = #{order_id}
+		</if>
+	</delete>
+	<delete id="delOrder">
+		delete from `order` where id = #{id}
+	</delete>
 </mapper>

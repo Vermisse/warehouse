@@ -36,4 +36,12 @@ public interface OrderMapper {
 			@Param("new_status") Integer new_status);
 	
 	List<Map<String, Object>> queryPie(@Param("create_date") String create_date);
+	
+	int edit(@Param("id") Integer id,
+			@Param("product_id") String product_id,
+			@Param("product_name") String product_name);
+	
+	int delProduct(@Param("id") Integer id, @Param("order_id") String order_id);
+	
+	int delOrder(@Param("id") String id);
 }

@@ -70,17 +70,16 @@
 											</thead>
 											<tbody>
 												<tr th:each="item : ${list}" th:style="${item.alert == 1} ? 'background:red;'">
-<!-- 													<input name="idValue" type="hidden" th:value="${item.id}" value="当前总库存" /> -->
 													<td th:text="${item.id}">1</td>
 													<td>
 														<span th:text="${item.name}" onclick="_toggle(this)"></span>
-														<span  style="display: none;">
+														<span style="display: none;">
 															<input th:id="'name_' + ${item.id}" name="name" type="text" th:value="${item.name}" value="产品名字" />
 														</span>
 													</td>
 													<td>
 														<span th:text="${item.count}" onclick="_toggle(this)"></span>
-														<span   style="display: none;">
+														<span style="display: none;">
 															<input th:id="'count_' + ${item.id}" type="text" th:value="${item.count}" value="总库存" />
 														</span> 
 													</td>

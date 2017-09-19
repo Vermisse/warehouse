@@ -1,0 +1,177 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:substituteby='template :: head'></head>
+<body>
+	<div class="wrapper">
+		<div class="sidebar" data-color="purple" data-image="/img/sidebar-5.jpg">
+			<div th:substituteby='template :: menu (${"订单导入"})'></div>
+		</div>
+		<div class="main-panel">
+			<nav th:substituteby='template :: nav (${"订单修改"})'></nav>
+			<div class="content">
+				<div class="container-fluid">
+					<form action="delProductBatch.html" method="post">
+						<input type="hidden" name="order_id" th:value="${order_id}" />
+						<div class="row">
+							<div class="col-md-12">
+								<div class="card">
+									<div class="content">
+										<div class="row">
+											<div class="col-md-2">
+												<div class="form-group">
+													<button type="button" class="btn btn-success btn-fill" onclick="commit()">批量删除</button>
+												</div>
+											</div>
+										</div>
+										<div class="clearfix"></div>
+										<div class="row" th:if="${msg != null}">
+											<div class="col-md-8">
+												<div class="alert alert-danger">
+													<span th:text="${msg}">错误提示</span>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<div class="card">
+									<div class="header">
+										<h4 class="title">订单号<span th:text="${order_id}"></span></h4>
+									</div>
+									<div class="content table-responsive table-full-width">
+										<table class="table table-hover table-striped">
+											<thead>
+												<th>
+													<input type="checkbox" onchange="checkAll(this)" />
+												</th>
+												<th>商品编号</th>
+												<th>商品名称</th>
+												<th>操作</th>
+											</thead>
+											<tbody>
+												<tr th:each="item : ${list}">
+													<td>
+														<input type="checkbox" name="id" th:value="${item.id}" />
+													</td>
+													<td>
+														<span th:text="${item.product_id}" th:onclick="'_toggle(this,' + ${item.id} + ')'">商品编号</span>
+														<span style="display: none;">
+															<input th:id="'product_id_' + ${item.id}" name="product_id" type="text"
+																th:value="${item.product_id}" class="form-control" value="商品编号" />
+														</span>
+													</td>
+													<td>
+														<span th:text="${item.product_name}" th:onclick="'_toggle(this,' + ${item.id} + ')'">商品名称</span>
+														<span style="display: none;">
+															<input th:id="'product_name_' + ${item.id}" name="product_name" type="text"
+																th:value="${item.product_name}" class="form-control" value="商品名称" />
+														</span>
+													</td>
+													<td>
+														<button type="button" th:id="'btn_' + ${item.id}"
+															class="btn btn-warning btn-fill" disabled="disabled"
+															th:onclick="'save(\'' + ${item.id} + '\')'">保存</button>
+														<button type="button" class="btn btn-default btn-fill"
+															th:onclick="'del(\'' + ${item.id} + '\')'">删除</button>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript">
+		function commit(){
+			if($("tbody input[type='checkbox']:checked").length == 0){
+				alert("没有选择商品！");
+				return;
+			}
+			if(confirm("确定要删除吗？")) {
+				$("form").submit();
+			}
+		}
+		
+		function checkAll(chk) {
+			$("tbody input[type='checkbox']").each(function(i, e) {
+				e.checked = chk.checked;
+			});
+		}
+
+		// 切换
+		function _toggle(obj, id) {
+			$(obj).hide();
+			$(obj).next().show();
+			$("#btn_" + id).attr("disabled", false);
+		}
+
+		// 保存当前行被修改的数据
+		function save(id) {
+			var product_id = $('#product_id_' + id).val();
+			var product_name = $('#product_name_' + id).val();
+
+			var json = {
+				id : id,
+				product_id : product_id,
+				product_name : product_name
+			};
+
+			if (product_id == "") {
+				alert("商品编码不能为空！");
+				return;
+			}
+			if (product_name == "") {
+				alert("商品名称不能为空！");
+				return;
+			}
+
+			$.ajax({
+				url : "edit.html", //请求的url地址
+				type : "post", //请求方式
+				data : json, //参数值
+				dataType : "json", //返回格式为json
+				success : function(data) {
+					debugger
+					//请求成功时处理
+					alert("修改成功");
+					window.location.reload();
+				},
+				error : function() {
+					//请求出错处理
+				}
+			});
+		}
+
+		// 删除
+		function del(id) {
+			if (confirm("确定要删除吗？")) {
+				var json = {
+					id : id
+				};
+				$.ajax({
+					url : "delProduct.html", //请求的url地址
+					dataType : "json", //返回格式为json
+					data : json, //参数值
+					type : "post", //请求方式
+					success : function(data) {
+						//请求成功时处理
+						alert("删除成功");
+						window.location.reload();
+					},
+					error : function() {
+						//请求出错处理
+					}
+				});
+			}
+		}
+	</script>
+</body>
+</html>
