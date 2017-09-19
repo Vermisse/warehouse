@@ -1,14 +1,13 @@
 package org.warehouse.web.service;
 
-import java.io.InputStream;
+import java.io.*;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.warehouse.web.dao.product.ProductMapper;
+import org.apache.poi.hssf.usermodel.*;
+import org.springframework.beans.factory.annotation.*;
+import org.springframework.stereotype.*;
+import org.springframework.transaction.annotation.*;
+import org.warehouse.util.*;
+import org.warehouse.web.dao.product.*;
 
 @Service
 public class ProductService {
@@ -29,8 +28,9 @@ public class ProductService {
 					HSSFRow hssfRow = hssfSheet.getRow(rowNum);
 					if (hssfRow == null)
 						continue;
-					String name = getCell(hssfRow, 0);
-					String id =  getCell(hssfRow, 1);
+					
+					String name = PoiUtil.getValue(hssfRow.getCell(0));
+					String id = PoiUtil.getValue(hssfRow.getCell(1));
 					
 					Integer count = (int) hssfRow.getCell(2).getNumericCellValue();
 					
@@ -46,15 +46,5 @@ public class ProductService {
 		} finally {
 			hssfWorkbook.close();
 		}
-	}
-	
-	public String getCell(HSSFRow hssfRow, int i) {
-		String str = "";
-		try {
-			str = hssfRow.getCell(i).getStringCellValue().trim();
-		} catch (Exception e) {
-			str = String.valueOf((int) hssfRow.getCell(i).getNumericCellValue()).replace(".0", "").trim();
-		}
-		return str;
 	}
 }

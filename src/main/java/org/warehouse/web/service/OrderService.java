@@ -7,6 +7,7 @@ import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.transaction.annotation.*;
+import org.warehouse.util.PoiUtil;
 import org.warehouse.web.dao.order.*;
 
 @Service
@@ -31,11 +32,11 @@ public class OrderService {
 						continue;
 
 					
-					String product_ids = getCell(hssfRow, 0);
-					String product_names =  getCell(hssfRow, 1);
-					String delivery =  getCell(hssfRow, 2);
-					String order_id =  getCell(hssfRow, 4);
-					
+					String product_ids = PoiUtil.getValue(hssfRow.getCell(0));
+					String product_names = PoiUtil.getValue(hssfRow.getCell(1));
+					String delivery = PoiUtil.getValue(hssfRow.getCell(2));
+					String order_id = PoiUtil.getValue(hssfRow.getCell(4));
+
 					Date create_date = hssfRow.getCell(3).getDateCellValue();
 					
 					String[] product_id = product_ids.split(",");
@@ -57,15 +58,5 @@ public class OrderService {
 		} finally {
 			hssfWorkbook.close();
 		}
-	}
-	
-	public String getCell(HSSFRow hssfRow, int i) {
-		String str = "";
-		try {
-			str = hssfRow.getCell(i).getStringCellValue().trim();
-		} catch (Exception e) {
-			str = String.valueOf((int) hssfRow.getCell(i).getNumericCellValue()).replace(".0", "").trim();
-		}
-		return str;
 	}
 }
