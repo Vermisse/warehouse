@@ -48,7 +48,6 @@ public class OrderController {
 	String product(@PathVariable String order_id, Model model) {
 		List<Map<String, Object>> list = mapper.queryProducts(order_id);
 		model.addAttribute("list", list);
-		model.addAttribute("order_id", order_id);
 		return "order/product";
 	}
 	

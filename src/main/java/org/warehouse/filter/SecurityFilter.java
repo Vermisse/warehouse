@@ -5,6 +5,7 @@ import java.util.*;
 import javax.servlet.http.*;
 
 import org.springframework.context.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.*;
 
 /**
@@ -32,5 +33,18 @@ public class SecurityFilter extends HandlerInterceptorAdapter {
 		}
 		
 		return super.preHandle(request, response, handler);
+	}
+
+	/**
+	 * 将入参带回request
+	 */
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+		Enumeration<String> keys = request.getParameterNames();
+		while (keys.hasMoreElements()) {
+			String key = keys.nextElement();
+			if (request.getAttribute(key) == null)
+				request.setAttribute(key, request.getParameter(key));
+		}
+		super.postHandle(request, response, handler, modelAndView);
 	}
 }

@@ -2,7 +2,7 @@ package org.warehouse.web.controller;
 
 import java.util.*;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -33,9 +33,6 @@ public class ProductController {
 
 		model.addAttribute("list", list);
 		model.addAttribute("page", page);
-		model.addAttribute("id", id);
-		model.addAttribute("create_time", create_time);
-		model.addAttribute("productName", productName);
 		return "product/list";
 	}
 	

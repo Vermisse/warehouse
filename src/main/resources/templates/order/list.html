@@ -16,9 +16,9 @@
 								<div class="card">
 									<div class="content">
 										<div class="row">
-											<div class="col-md-3">
+											<div class="col-md-2">
 												<div class="form-group">
-													<input type="text" name="id" class="form-control" placeholder="订单号" />
+													<input type="text" name="id" th:value="${id}" class="form-control" placeholder="订单号" />
 													<input type="file" name="file" style="display:none;" />
 												</div>
 											</div>
@@ -26,15 +26,15 @@
 												<div class="form-group">
 													<select class="form-control" name="status">
 														<option value="-1">-- 全部 --</option>
-														<option value="1">未处理</option>
-														<option value="2">处理中</option>
-														<option value="3">已完成</option>
+														<option value="1" th:selected="${status == '1'}">未处理</option>
+														<option value="2" th:selected="${status == '2'}">处理中</option>
+														<option value="3" th:selected="${status == '3'}">已完成</option>
 													</select>
 												</div>
 											</div>
-											<div class="col-md-2">
+											<div class="col-md-3">
 												<div class="form-group">
-													<input type="date" name="create_date" class="form-control" />
+													<input type="date" name="create_date" th:value="${create_date}" class="form-control" />
 												</div>
 											</div>
 											<div class="col-md-4">

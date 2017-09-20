@@ -8,9 +8,8 @@ import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
-import org.warehouse.web.dao.*;
-import org.warehouse.web.dao.order.OrderMapper;
-import org.warehouse.web.dao.user.UserMapper;
+import org.warehouse.web.dao.order.*;
+import org.warehouse.web.dao.user.*;
 
 @Controller
 public class LoginController {
@@ -27,7 +26,6 @@ public class LoginController {
 			return "login";
 		
 		order.queryPie(create_date).forEach(x -> model.addAttribute("v" + x.get("status"), x.get("cnt")));
-		model.addAttribute("create_date", create_date);
 		return "main";
 	}
 

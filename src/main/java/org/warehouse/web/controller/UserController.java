@@ -2,15 +2,14 @@ package org.warehouse.web.controller;
 
 import java.util.*;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.*;
 
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
 import org.springframework.ui.*;
 import org.springframework.web.bind.annotation.*;
 import org.warehouse.util.*;
-import org.warehouse.web.dao.*;
-import org.warehouse.web.dao.user.UserMapper;
+import org.warehouse.web.dao.user.*;
 
 @Controller
 @RequestMapping("user")
