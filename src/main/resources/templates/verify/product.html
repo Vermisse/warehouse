@@ -51,15 +51,23 @@
 									<div class="content table-responsive table-full-width">
 										<table class="table table-hover table-striped">
 											<thead>
-												<th>序号</th>
 												<th>商品编码</th>
 												<th>商品名称</th>
 												<th>状态</th>
 											</thead>
 											<tbody>
-												<tr th:each="item,stat : ${list}"
-													th:style="${item.finish == 1}? 'background: #00cc00; color: white;'" th:id="'tr' + ${stat.count}">
-													<td th:text="${stat.count}">序号</td>
+												<tr th:each="item : ${list}" th:if="${item.finish != 1}">
+													<td th:text="${item.product_id}">商品编码</td>
+													<td th:text="${item.product_name}">商品名称</td>
+													<td>
+														<span th:if="${item.finish == 1}">已扫描</span>
+														<span th:if="${item.finish == 0}">
+															<a href="javascript:;" th:onclick="'accept(\'' + ${item.product_id} + '\')'">手动处理</a>
+														</span>
+													</td>
+												</tr>
+												<tr th:each="item : ${list}" th:if="${item.finish == 1}"
+													style="background: #00cc00; color: white;">
 													<td th:text="${item.product_id}">商品编码</td>
 													<td th:text="${item.product_name}">商品名称</td>
 													<td>
@@ -80,7 +88,6 @@
 			</div>
 		</div>
 	</div>
-	
     <script src="/js/jquery.hotkeys.js"></script>
 	<script type="text/javascript" th:inline="javascript">
 		var interval = setInterval(function(){
@@ -92,13 +99,13 @@
 			$("form").submit();
 		}
 		
-		 function domo(){
-            jQuery(document).bind('keydown', 'tab',function (evt){
+		function domo(){
+			jQuery(document).bind('keydown', 'tab',function (evt){
 				clearInterval(interval);
 			});
-         }
-         
-         jQuery(document).ready(domo);
+		}
+
+		jQuery(document).ready(domo);
 	</script>
 </body>
 </html>
