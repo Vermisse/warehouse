@@ -64,13 +64,13 @@ public class ProductController {
 		return "{\"err\":0}";
 	}
 	
-	@RequestMapping(value="add", method = RequestMethod.GET)
+	@GetMapping("add")
 	String addProduct(Model model) {
 		return "product/add";
 	}
 	
 	@SuppressWarnings("unchecked")
-	@RequestMapping(value="add", method = RequestMethod.POST)
+	@PostMapping("add")
 	String addProduct(String id, int count, String name, Model model, HttpSession session) {
 		if(mapper.checkProduct(id) != null) {
 			Page page = new Page();

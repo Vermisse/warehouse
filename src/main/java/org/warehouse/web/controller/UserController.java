@@ -29,12 +29,12 @@ public class UserController {
 		return "user/list";
 	}
 
-	@RequestMapping(value = "add", method = RequestMethod.GET)
+	@GetMapping("add")
 	String add() {
 		return "user/add";
 	}
 
-	@RequestMapping(value = "add", method = RequestMethod.POST)
+	@PostMapping("add")
 	String add(String name, String password, Model model) {
 		if(mapper.queryUser(name, null) != null) {
 			model.addAttribute("msg", "帐号已存在！");
@@ -53,7 +53,7 @@ public class UserController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "edit", method = RequestMethod.GET)
+	@GetMapping("edit")
 	String editPassword(String id, Model model, HttpSession session) {
 		if("0".equals(id)) {
 			Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
@@ -73,7 +73,7 @@ public class UserController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping(value = "edit", method = RequestMethod.POST)
+	@PostMapping("edit")
 	String editPasswordById(String userId, String password, Model model) {
 		int result = mapper.editPasswordById(userId, password);
 		if(result == 0) {

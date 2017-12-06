@@ -44,41 +44,41 @@ public class OrderController {
 		}
 	}
 	
-	@RequestMapping(value = "{order_id}", method = RequestMethod.GET)
+	@GetMapping("{order_id}")
 	String product(@PathVariable String order_id, Model model) {
 		List<Map<String, Object>> list = mapper.queryProducts(order_id);
 		model.addAttribute("list", list);
 		return "order/product";
 	}
 	
-	@RequestMapping(value = "edit", method = RequestMethod.POST)
+	@PostMapping("edit")
 	@ResponseBody
 	String edit(Integer id, String product_id, String product_name) {
 		mapper.edit(id, product_id, product_name);
 		return "{\"err\":true}";
 	}
 	
-	@RequestMapping(value = "delProduct", method = RequestMethod.POST)
+	@PostMapping("delProduct")
 	@ResponseBody
 	String delProduct(Integer id) {
 		mapper.delProduct(id, null);
 		return "{\"err\":true}";
 	}
 	
-	@RequestMapping(value = "delProductBatch", method = RequestMethod.POST)
+	@PostMapping("delProductBatch")
 	String delProductBatch(Integer[] id, String order_id) {
 		service.delProductBatch(id);
 		return "redirect:/order/" + order_id + ".html";
 	}
 	
-	@RequestMapping(value = "delOrder", method = RequestMethod.POST)
+	@PostMapping("delOrder")
 	@ResponseBody
 	String delOrder(String id) {
 		service.delOrder(id);
 		return "{\"err\":true}";
 	}
 	
-	@RequestMapping(value = "delOrderBatch", method = RequestMethod.POST)
+	@PostMapping("delOrderBatch")
 	String delOrderBatch(String[] id) {
 		service.delOrderBatch(id);
 		return "redirect:/order/list.html";

@@ -17,7 +17,7 @@ public class VerifyController {
 	@Autowired
 	private OrderMapper mapper;
 	
-	@RequestMapping(value = "order", method = RequestMethod.GET)
+	@GetMapping("order")
 	String order(Model model, HttpSession session) {
 		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
 		List<Map<String, Object>> list = mapper.queryUnfinish((Integer) user.get("id"));
@@ -25,7 +25,7 @@ public class VerifyController {
 		return "verify/order";
 	}
 	
-	@RequestMapping(value = "order", method = RequestMethod.POST)
+	@PostMapping("order")
 	String order(String id, Model model, HttpSession session) {
 		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
 		Map<String, Object> order = mapper.checkOrder(id);
